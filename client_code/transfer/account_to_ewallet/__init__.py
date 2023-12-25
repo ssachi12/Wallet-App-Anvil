@@ -43,7 +43,7 @@ class account_to_ewallet(account_to_ewalletTemplate):
       user_for_emoney = self.user['username']
       e_wallet_for_emoney = wallet3
     
-      if (money_value < 5) or (money_value > 50000):
+      if (money_value < 5) or (money_value > 50000) or (money_value > float(user_currency['money_usd'])) or (money_value > float(user_currency['money_euro'])) :
         app_tables.transactions.add_row(
                 user=self.user['username'],
                 casa=int(acc),
