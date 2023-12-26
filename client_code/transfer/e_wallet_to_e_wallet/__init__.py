@@ -93,7 +93,11 @@ class e_wallet_to_e_wallet(e_wallet_to_e_walletTemplate):
           
     def validate(self):
       currencies_table = app_tables.currencies.search(user=self.user['username'])
-      for row in currencies_rows:
+      for row in currencies_table:
+         conversion_usd = float(row['money_usd'] if 'money_usd' in row else 0) * 80
+         conversion_euro = float(row['money_euro'] if 'money_euro' in row else 0) * 85
+         conversion_swis = float(row['money_swis'] if 'money_swis' in row else 0) * 90
+         conversion_inr = float(row['money_inr'] if 'money_inr' in row else 0) * 1
          conversion_usd = float(currencies_table['money_usd'])*80
          conversion_euro = float(currencies_table['money_euro'])*85
          conversion_swis = float(currencies_table['money_swis']) * 90
