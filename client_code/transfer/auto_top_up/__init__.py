@@ -83,22 +83,22 @@ class auto_top_up(auto_top_upTemplate):
         currencies_table['money_usd'] = str((conversion_usd- 5000)/80)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deduction", "USD", "success")
+        self.record_transaction("Currency Deducted", "USD", "success")
     elif conversion_euro  > 5000:
         currencies_table['money_euro'] = str((conversion_euro- 5000)/85)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deduction", "Euro", "success")
+        self.record_transaction("Currency Deducted", "Euro", "success")
     elif conversion_swis > 5000:
         currencies_table['money_swis'] = str((conversion_swis - 5000) / 90)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deduction", "Swis", "success")
+        self.record_transaction("Currency Deducted", "Swis", "success")
     elif conversion_inr > 5000:
         currencies_table['money_inr'] = str((conversion_inr - 5000) / 1)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deduction", "Inr", "success")
+        self.record_transaction("Currency Deducted", "Inr", "success")
     else:
       self.label_5.text = "Insufficient funds"
       # Record failed deduction in the transactions table
@@ -106,14 +106,15 @@ class auto_top_up(auto_top_upTemplate):
 
   def record_transaction(self, transaction_type, details, proof):
         current_datetime = datetime.now()
-        type_of_transaction = "Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
+        acc = self.dropdown_account_numbers.selected_value
+        wallet3 = anvil.server.call('generate_unique_id', self.user['username'], self.user['phone'])
         app_tables.transactions.add_row(
             user=self.user['username'],
             casa = int(acc),
-            e_wallet=wallet3, #"Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
+            e_wallet=wallet3, 
             money=details,
             date=current_datetime,
-            transaction_type=type_of_transaction,
+            transaction_type=transaction_type,
             proof=proof
         )
         
