@@ -23,6 +23,8 @@ class auto_top_up(auto_top_upTemplate):
 
 
   def button_1_click(self, **event_args):
+    acc = self.dropdown_account_numbers.selected_value
+    wallet3 = anvil.server.call('generate_unique_id', self.user['username'], self.user['phone'])
     self.user['top_up']= True
     self.user.update()
     self.button_1.visible = False
@@ -41,14 +43,14 @@ class auto_top_up(auto_top_upTemplate):
           anvil.server.call('update_all_rows',self.user['username'], final)
 
           # Record successful automatic transaction and currency deduction
-          self.record_transaction("Automatic Top-Up", f"₹5000 - {self.dropdown_account_numbers.selected_value}", "success")
+          self.record_transaction("Automatic Top-Up", f"₹5000 - {acc}", "success")
           
           self.button_1.visible = False
           self.button_2.visible = True
         else:
           self.label_5.text = "Insufficient Funds put money in your casa account"
           # Record failed transaction due to insufficient funds
-          self.record_transaction("Automatic Top-Up", f"₹5000 - {self.dropdown_account_numbers.selected_value}", "failed")
+          self.record_transaction("Automatic Top-Up", f"₹5000 - {acc}", "failed")
       else:
         return f"E-wallet balance ({money_in_emoney}) is above the threshold. No top-up needed."
     
@@ -104,12 +106,14 @@ class auto_top_up(auto_top_upTemplate):
 
   def record_transaction(self, transaction_type, details, proof):
         current_datetime = datetime.now()
+        type_of_transaction = "Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
         app_tables.transactions.add_row(
             user=self.user['username'],
-            e_wallet="Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
+            casa = int(acc),
+            e_wallet=wallet3, #"Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
             money=details,
             date=current_datetime,
-            transaction_type=transaction_type,
+            transaction_type=type_of_transaction,
             proof=proof
         )
         

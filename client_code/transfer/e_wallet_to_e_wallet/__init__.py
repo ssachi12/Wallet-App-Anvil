@@ -92,21 +92,22 @@ class e_wallet_to_e_wallet(e_wallet_to_e_walletTemplate):
             
           
     def validate(self):
-      currencies_table = app_tables.currencies.get(user=self.user['username'])
-      conversion_usd = float(currencies_table['money_usd'])*80
-      conversion_euro = float(currencies_table['money_euro'])*85
-      conversion_swis = float(currencies_table['money_swis']) * 90
-      conversion_inr = float(currencies_table['money_inr']) * 1
-      if conversion_usd > 5000:
-        return True
-      elif conversion_euro  > 5000:
-        return True
-      elif conversion_swis > 5000:
-        return True
-      elif conversion_inr > 5000:
-        return True
+      currencies_table = app_tables.currencies.search(user=self.user['username'])
+      for row in currencies_rows:
+         conversion_usd = float(currencies_table['money_usd'])*80
+         conversion_euro = float(currencies_table['money_euro'])*85
+         conversion_swis = float(currencies_table['money_swis']) * 90
+         conversion_inr = float(currencies_table['money_inr']) * 1
+         if conversion_usd > 5000:
+          return True
+         elif conversion_euro  > 5000:
+          return True
+         elif conversion_swis > 5000:
+          return True
+         elif conversion_inr > 5000:
+          return True
       else:
-         return False
+        return False
       
     def deduct_currencies(self, amount):
       currencies_table = app_tables.currencies.get(user=self.user['username'])
