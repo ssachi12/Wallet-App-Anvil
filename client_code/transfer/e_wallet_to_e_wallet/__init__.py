@@ -26,16 +26,32 @@ class e_wallet_to_e_wallet(e_wallet_to_e_walletTemplate):
         fore_money_depositor = anvil.server.call('get_accounts_emoney_using_wallet_id', depositor_wallet_id)
         #getting the reciever's details
         fore_money_sent = anvil.server.call('get_accounts_emoney_using_wallet_id',wallet_id)
-        recieve = float(fore_money_sent['e_money']) 
-        if(fore_money_sent['e_money']== None):
-          anvil.server.call('update_rows_emoney_trasaction',wallet_id, str(0))
+        recieve = float(fore_money_sent['e_money']) if fore_money_sent['e_money'] else 0
+        # if(fore_money_sent['e_money']== None):
+        #   anvil.server.call('update_rows_emoney_trasaction',wallet_id, str(0))
         if (transfer_amount < 5) or (transfer_amount > 50000):
            proof="failed"
            self.label_4.text = "Transfer amount should be between 5 and 50000 for a transfer Funds." 
+           app_tables.transactions.add_row(
+            user=self.user['username'],
+            e_wallet=f"{depositor_wallet_id} to {wallet_id}",
+            money=f"₹-{transfer_amount}",
+            date=current_datetime,
+            transaction_type="E-wallet to E-wallet",
+            proof=proof
+           )        
         else:
            if float(fore_money_depositor['e_money']) < transfer_amount:
              proof = "failed"
              self.label_4.text = "Insufficient Funds in E-Wallet."
+             app_tables.transactions.add_row(
+                user=self.user['username'],
+                e_wallet=f"{depositor_wallet_id} to {wallet_id}",
+                money=f"₹-{transfer_amount}",
+                date=current_datetime,
+                transaction_type="E-wallet to E-wallet",
+                proof=proof
+             )
            else: 
              proof="success"
              #calculating the money to be added in the recieve's end
