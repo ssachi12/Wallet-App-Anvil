@@ -83,22 +83,22 @@ class auto_top_up(auto_top_upTemplate):
         currencies_table['money_usd'] = str((conversion_usd- 5000)/80)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deducted", "$-5000", "success")
+        self.record_transaction("Currency Deducted", "$-USD", "success")
     elif conversion_euro  > 5000:
         currencies_table['money_euro'] = str((conversion_euro- 5000)/85)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deducted", "Є-5000", "success")
+        self.record_transaction("Currency Deducted", "Є-EURO", "success")
     elif conversion_swis > 5000:
         currencies_table['money_swis'] = str((conversion_swis - 5000) / 90)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deducted", "₣-5000", "success")
+        self.record_transaction("Currency Deducted", "₣-SWIS", "success")
     elif conversion_inr > 5000:
         currencies_table['money_inr'] = str((conversion_inr - 5000) / 1)
         currencies_table.update()
         # Record successful deduction in the transactions table
-        self.record_transaction("Currency Deducted", "₹-5000", "success")
+        self.record_transaction("Currency Deducted", "₹-INR", "success")
     else:
       self.label_5.text = "Insufficient funds"
       # Record failed deduction in the transactions table

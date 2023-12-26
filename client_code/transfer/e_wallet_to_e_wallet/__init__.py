@@ -98,10 +98,10 @@ class e_wallet_to_e_wallet(e_wallet_to_e_walletTemplate):
          conversion_euro = float(row['money_euro'] if 'money_euro' in row else 0) * 85
          conversion_swis = float(row['money_swis'] if 'money_swis' in row else 0) * 90
          conversion_inr = float(row['money_inr'] if 'money_inr' in row else 0) * 1
-         conversion_usd = float(currencies_table['money_usd'])*80
-         conversion_euro = float(currencies_table['money_euro'])*85
-         conversion_swis = float(currencies_table['money_swis']) * 90
-         conversion_inr = float(currencies_table['money_inr']) * 1
+         # conversion_usd = float(currencies_table['money_usd'])*80
+         # conversion_euro = float(currencies_table['money_euro'])*85
+         # conversion_swis = float(currencies_table['money_swis']) * 90
+         # conversion_inr = float(currencies_table['money_inr']) * 1
          if conversion_usd > 5000:
           return True
          elif conversion_euro  > 5000:
