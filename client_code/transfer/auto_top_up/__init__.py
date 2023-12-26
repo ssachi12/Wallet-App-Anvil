@@ -39,10 +39,16 @@ class auto_top_up(auto_top_upTemplate):
           print("hi I'm sending user value")
           self.deduct_currencies(final)
           anvil.server.call('update_all_rows',self.user['username'], final)
+
+          # Record successful automatic transaction and currency deduction
+          self.record_transaction("Automatic Top-Up", f"₹5000 - {self.dropdown_account_numbers.selected_value}", "success")
+          
           self.button_1.visible = False
           self.button_2.visible = True
         else:
           self.label_5.text = "Insufficient Funds put money in your casa account"
+          # Record failed transaction due to insufficient funds
+          self.record_transaction("Automatic Top-Up", f"₹5000 - {self.dropdown_account_numbers.selected_value}", "failed")
       else:
         return f"E-wallet balance ({money_in_emoney}) is above the threshold. No top-up needed."
     
@@ -74,17 +80,39 @@ class auto_top_up(auto_top_upTemplate):
     if conversion_usd > 5000:
         currencies_table['money_usd'] = str((conversion_usd- 5000)/80)
         currencies_table.update()
+        # Record successful deduction in the transactions table
+        self.record_transaction("Currency Deduction", "USD", "success")
     elif conversion_euro  > 5000:
         currencies_table['money_euro'] = str((conversion_euro- 5000)/85)
         currencies_table.update()
+        # Record successful deduction in the transactions table
+        self.record_transaction("Currency Deduction", "Euro", "success")
     elif conversion_swis > 5000:
         currencies_table['money_swis'] = str((conversion_swis - 5000) / 90)
         currencies_table.update()
+        # Record successful deduction in the transactions table
+        self.record_transaction("Currency Deduction", "Swis", "success")
     elif conversion_inr > 5000:
         currencies_table['money_inr'] = str((conversion_inr - 5000) / 1)
         currencies_table.update()
+        # Record successful deduction in the transactions table
+        self.record_transaction("Currency Deduction", "Inr", "success")
     else:
       self.label_5.text = "Insufficient funds"
+      # Record failed deduction in the transactions table
+      self.record_transaction("Currency Deduction", "Unknown", "failed")
+
+  def record_transaction(self, transaction_type, details, proof):
+        current_datetime = datetime.now()
+        app_tables.transactions.add_row(
+            user=self.user['username'],
+            e_wallet="Auto Top-Up" if transaction_type == "Automatic Top-Up" else "Currency Deduction",
+            money=details,
+            date=current_datetime,
+            transaction_type=transaction_type,
+            proof=proof
+        )
+        
 
 
   def button_2_click(self, **event_args):
