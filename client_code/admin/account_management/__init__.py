@@ -12,8 +12,7 @@ class account_management(account_managementTemplate):
     self.init_components(**properties)
     self.button_1.visible = False
     self.user =user
-    mail= self.user['email']
-    print(mail)
+    #print(mail)
     self.refresh_users()
 
   def refresh_users(self, username_filter=None):
@@ -49,5 +48,8 @@ class account_management(account_managementTemplate):
   def button_8_click(self, **event_args):
     """This method is called when the button is clicked"""
     open_form('Home')
+
+  def button_3_click(self, **event_args):
+    open_form('admin')
 
  

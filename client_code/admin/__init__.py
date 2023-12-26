@@ -13,7 +13,6 @@ class admin(adminTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.user = user
-    mail = self.user['email']
     if user is not None:
             self.label_1.text = f"Welcome to Green Gate Financial, {user['username']}"
     else:
@@ -26,7 +25,7 @@ class admin(adminTemplate):
 
   def button_1_click(self, **event_args):
         # Open the show_users form and pass the user data
-        show_users_form = open_form('admin.user_management')
+        show_users_form = open_form('admin.show_users')
 
   def button_5_click(self, **event_args):
     open_form('admin.account_management', user= self.user)
