@@ -43,14 +43,14 @@ class auto_top_up(auto_top_upTemplate):
           anvil.server.call('update_all_rows',self.user['username'], final)
 
           # Record successful automatic transaction and currency deduction
-          self.record_transaction("Automatic Top-Up", f"₹5000 - {acc}", "success")
+          self.record_transaction("Automatic Top-Up", f"₹5000", "success")
           
           self.button_1.visible = False
           self.button_2.visible = True
         else:
           self.label_5.text = "Insufficient Funds put money in your casa account"
           # Record failed transaction due to insufficient funds
-          self.record_transaction("Automatic Top-Up", f"₹5000 - {acc}", "failed")
+          self.record_transaction("Automatic Top-Up", f"₹5000", "failed")
       else:
         return f"E-wallet balance ({money_in_emoney}) is above the threshold. No top-up needed."
     
